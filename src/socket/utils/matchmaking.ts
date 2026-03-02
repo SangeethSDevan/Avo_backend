@@ -31,7 +31,9 @@ export function findPartner(
             duration: duration,
             breakCount:breakCount,
             batchCount:1,
-            readyCount:0
+            readyCount:0,
+            readyUsers:[]
+            
         }
         socket.join(newConnection.roomId)
         const partnerSocket = io.sockets.sockets.get(socketDetail!.socketId)

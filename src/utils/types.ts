@@ -14,6 +14,7 @@ export interface roomDetails{
     breakCount:number
     users:string[]
     readyUsers:string[]
+    readyCount:number
 }
 export interface activeRoomDetails extends roomDetails{
     type:"FOCUS"|"BREAK"
