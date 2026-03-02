@@ -1,0 +1,5 @@
+-- CreateEnum
+CREATE TYPE "STATUS" AS ENUM ('SENT', 'CONFIRMED', 'REJECTED');
+
+-- AlterTable
+ALTER TABLE "Friends" ADD COLUMN     "status" "STATUS" NOT NULL DEFAULT 'SENT';
