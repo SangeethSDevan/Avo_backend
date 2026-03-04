@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken"
 
 interface loginDetails{
-    credentials?:string,
+    credential?:string,
     password:string
 }
 
@@ -85,7 +85,7 @@ export const signUpUser=async(req:Request,res:Response)=>{
 
 export const loginUser=async(req:Request,res:Response)=>{
     const userDetails:loginDetails=req.body
-    if(!userDetails||!userDetails.credentials||!userDetails.password){
+    if(!userDetails||!userDetails.credential||!userDetails.password){
         return res.status(400).json({
             status:"fail",
             message:"login credential or password is missing!"
@@ -101,8 +101,8 @@ export const loginUser=async(req:Request,res:Response)=>{
         const userFound = await prisma.users.findFirst({
             where: {
                 OR: [
-                    { email: userDetails.credentials },
-                    { username: userDetails.credentials }
+                    { email: userDetails.credential },
+                    { username: userDetails.credential }
                 ]
             }
         });

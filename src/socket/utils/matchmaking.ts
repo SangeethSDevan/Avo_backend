@@ -38,7 +38,7 @@ export function findPartner(
         socket.join(newConnection.roomId)
         const partnerSocket = io.sockets.sockets.get(socketDetail!.socketId)
         if (!partnerSocket) {
-            socket.emit("PARTNER_ERROR", "Partner disconnected!")
+            socket.emit("PARTNER_ERROR")
             return
         }
         partnerSocket.join(newConnection.roomId)

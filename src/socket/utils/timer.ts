@@ -19,15 +19,15 @@ export function startTimer(activeConnections:activeRoomDetails[],io:Server){
 
             if(brDetail && connection.batchCount <= connection.breakCount){
                 if(brDetail.status=='PROGRESS' && brDetail.start<=current){
-                    io.to(connection.roomId).emit("BREAK_START")
                     connection.type='BREAK'
                     connection.breaks[batchIndex]!.status='STARTED'
+                    io.to(connection.roomId).emit("BREAK_START",connection)
                 }
                 if(brDetail.status=='STARTED' && brDetail.end<=current){
-                    io.to(connection.roomId).emit("BREAK_END")
                     connection.breaks[batchIndex]!.status='ENDED'
                     connection.type='FOCUS'
                     connection.batchCount++
+                    io.to(connection.roomId).emit("BREAK_END",connection)
                 }
             }
             if(remainingTime<0){

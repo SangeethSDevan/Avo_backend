@@ -36,7 +36,7 @@ export function registerSocket(io:Server){
                 connections.splice(connectionIndex,1)
             }
             activeConnections.push(newActiveConnection)
-            io.to(newActiveConnection.roomId).emit("SESSION_STARTED")
+            io.to(newActiveConnection.roomId).emit("SESSION_STARTED",newActiveConnection)
         }
     })
 
