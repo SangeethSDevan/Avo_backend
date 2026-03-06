@@ -29,7 +29,7 @@ export const getFriends=async(req:Request,res:Response)=>{
             }
         })
         return res.status(200).json({
-            status:"fail",
+            status:"success",
             message:"Friends fetched sucessfully",
             data:{
                 length:friendsDetails.length,

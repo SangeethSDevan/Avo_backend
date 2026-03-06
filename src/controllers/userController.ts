@@ -64,6 +64,7 @@ export const signUpUser=async(req:Request,res:Response)=>{
             message:`Welcome ${userCreated.username}`,
             token:token,
             data:{
+                userId:userCreated.userId,
                 username:userCreated.username,
                 name:userCreated.name,
                 email:userCreated.email
@@ -118,11 +119,12 @@ export const loginUser=async(req:Request,res:Response)=>{
             message:"Password and login credential doesn't match"
         })
         const token=jwt.sign({userId:userFound.userId},process.env.JWT_SECRET)
-        return res.status(201).json({
+        return res.status(200).json({
             status:"success",
             message:`Welcome ${userFound.username}`,
             token:token,
             data:{
+                userId:userFound.userId,
                 username:userFound.username,
                 name:userFound.name,
                 email:userFound.email
