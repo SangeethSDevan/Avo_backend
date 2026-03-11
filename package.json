@@ -6,7 +6,7 @@
   "scripts": {
     "build":"tsc",
     "start": "node dist/server.js",
-    "postinstall": "npm run build && npm prisma generate"
+    "postinstall": "npm prisma generate && npm run build"
   },
   "keywords": [],
   "author": "",
