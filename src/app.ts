@@ -13,4 +13,11 @@ app.use(cookieParser())
 app.use("/api/v1/users",userRouter)
 app.use("/api/v1/friends",userAuth,friendRouter)
 
+app.get("/",(req,res)=>{
+    return res.status(200).json({
+        status:"success",
+        message:"Avo is active"
+    })
+})
+
 export default app
