@@ -1,14 +1,20 @@
 import type { Server, Socket } from "socket.io";
 import type { socketDetails, roomDetails, breaks} from "../../utils/types.js";
+import { prisma } from "../../utils/prisma.js";
 
-export function findPartner(
+export async function findPartner(
     waitingQueue:socketDetails[],
     connections:roomDetails[],
     duration:number,
     socket:Socket,
-    io:Server
+    category:"Study"|"Coding"|"Workout"|"Meditation"|"Reading",
+    io:Server,
+    socketIdMap:Map<string,string>
 ) {
-    const matchIndex = waitingQueue.findIndex((sockets) => sockets.duration === duration)
+    let matchIndex = waitingQueue.findIndex((sockets) => sockets.duration === duration && sockets.category==category)
+    if(matchIndex==-1){
+        matchIndex= waitingQueue.findIndex((sockets) => sockets.duration === duration)
+    }
     if (matchIndex !== -1) {
         const socketDetail = waitingQueue[matchIndex]
         waitingQueue.splice(matchIndex, 1)
@@ -21,7 +27,6 @@ export function findPartner(
         } else {
             breakCount = duration * 2-1
         }
-
         const newConnection: roomDetails = {
             roomId: crypto.randomUUID(),
             users:[
@@ -35,6 +40,26 @@ export function findPartner(
             readyUsers:[]
             
         }
+        
+        const userId=socketIdMap.get(socket.id);
+        const partnerId=socketIdMap.get(socketDetail!.socketId);
+
+        if(!userId || !partnerId){
+            socket.emit("AUTH_ERROR")
+            return
+        }
+
+        const userData=await prisma.users.findMany({
+            where:{
+                userId:{
+                    in:[userId,partnerId]
+                }
+            }
+        })
+
+        const currentUser=userData.find(u=>u.userId==userId);
+        const partnerUser=userData.find(u=>u.userId==partnerId);
+
         socket.join(newConnection.roomId)
         const partnerSocket = io.sockets.sockets.get(socketDetail!.socketId)
         if (!partnerSocket) {
@@ -42,12 +67,25 @@ export function findPartner(
             return
         }
         partnerSocket.join(newConnection.roomId)
+
         connections.push(newConnection)
-        io.to(newConnection.roomId).emit("MATCH_FOUND",newConnection)
+        socket.emit("MATCH_FOUND",{
+            roomId:newConnection.roomId,
+            duration:newConnection.duration,
+            partner:partnerUser,
+        })
+
+        partnerSocket.emit("MATCH_FOUND",{
+            roomId:newConnection.roomId,
+            duration:newConnection.duration,
+            partner:currentUser
+        })
+        
     } else {
         const newSocketDetail: socketDetails = {
             socketId: socket.id,
-            duration: duration
+            duration: duration,
+            category:category
         }
         waitingQueue.push(newSocketDetail)
         socket.emit("WAITING_FOR_PARTNER")

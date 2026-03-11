@@ -1,5 +1,6 @@
 import type { Server } from "socket.io"
 import type { activeRoomDetails } from "../../utils/types.js"
+import { prisma } from "../../utils/prisma.js"
 
 export function startTimer(activeConnections:activeRoomDetails[],io:Server){
     setInterval(()=>{
@@ -32,6 +33,11 @@ export function startTimer(activeConnections:activeRoomDetails[],io:Server){
             }
             if(remainingTime<0){
                 io.to(connection.roomId).emit("SESSION_ENDED")
+                try{
+                    
+                }catch(error){
+
+                }
                 const connectionIndex=activeConnections.findIndex((c)=>c.roomId==connection.roomId)
                 activeConnections.splice(connectionIndex,1)
                 continue

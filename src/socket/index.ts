@@ -6,15 +6,22 @@ import { startTimer } from "./utils/timer.js";
 const waitingQueue=<socketDetails[]>[]
 const activeConnections=<activeRoomDetails[]>[]
 const connections=<roomDetails[]>[]
+const socketIdMap=new Map<string,string>()
 
 export function registerSocket(io:Server){
     startTimer(activeConnections,io)
-
     io.on('connection',(socket)=>{
-    console.log(`${socket.id} connected!`)
+    
+    const userId=socket.handshake.auth.userId;
+    socketIdMap.set(socket.id,userId);
 
-    socket.on("FIND_PARTNER",(duration:number)=>{
-        findPartner(waitingQueue,connections,duration,socket,io)
+    console.log(`${socket.id} of ${userId} connected!`)
+
+    socket.on("FIND_PARTNER",(data:{
+        duration:number,
+        category:"Study"|"Coding"|"Workout"|"Meditation"|"Reading"
+    })=>{
+        findPartner(waitingQueue,connections,data.duration,socket,data.category,io,socketIdMap)
     })
     socket.on("SESSION_START",(roomId:string)=>{
         const connection=connections.find((connection)=>connection.roomId==roomId)
@@ -39,7 +46,12 @@ export function registerSocket(io:Server){
             io.to(newActiveConnection.roomId).emit("SESSION_STARTED",newActiveConnection)
         }
     })
-
+    socket.on("SESSION_WAITING_LEFT",()=>{
+        const waitingIndex=waitingQueue.findIndex((detail)=>detail.socketId==socket.id);
+        if(waitingIndex!=-1){
+            waitingQueue.splice(waitingIndex,1)
+        }
+    })
     socket.on('disconnect',()=>{
         const disconnectedIndex=waitingQueue.findIndex((detail)=>detail.socketId===socket.id)
         if(disconnectedIndex!=-1){

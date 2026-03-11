@@ -5,7 +5,8 @@ export interface breaks{
 }
 export interface socketDetails{
     socketId:string,
-    duration:number
+    duration:number,
+    category:"Study"|"Coding"|"Workout"|"Meditation"|"Reading"
 }
 export interface roomDetails{
     roomId:string,
