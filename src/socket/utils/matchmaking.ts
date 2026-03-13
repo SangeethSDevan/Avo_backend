@@ -72,7 +72,7 @@ export async function findPartner(
         socket.emit("MATCH_FOUND",{
             roomId:newConnection.roomId,
             duration:newConnection.duration,
-            partner:partnerUser,
+            partner:partnerUser?.name,
         })
 
         partnerSocket.emit("MATCH_FOUND",{
