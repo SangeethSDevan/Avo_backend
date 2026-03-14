@@ -1,7 +1,7 @@
 {
-  "name": "backend",
+  "name": "avo",
   "version": "1.0.0",
-  "description": "",
+  "description": "Avo is an 1-1 companion app for effective sesions, with promodoro",
   "main": "index.js",
   "scripts": {
     "build":"tsc",

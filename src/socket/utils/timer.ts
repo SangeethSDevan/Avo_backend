@@ -1,6 +1,5 @@
 import type { Server } from "socket.io"
 import type { activeRoomDetails } from "../../utils/types.js"
-import { prisma } from "../../utils/prisma.js"
 
 export function startTimer(activeConnections:activeRoomDetails[],io:Server){
     setInterval(()=>{
@@ -22,13 +21,13 @@ export function startTimer(activeConnections:activeRoomDetails[],io:Server){
                 if(brDetail.status=='PROGRESS' && brDetail.start<=current){
                     connection.type='BREAK'
                     connection.breaks[batchIndex]!.status='STARTED'
-                    io.to(connection.roomId).emit("BREAK_START",connection)
+                    io.to(connection.roomId).emit("BREAK_START")
                 }
                 if(brDetail.status=='STARTED' && brDetail.end<=current){
                     connection.breaks[batchIndex]!.status='ENDED'
                     connection.type='FOCUS'
                     connection.batchCount++
-                    io.to(connection.roomId).emit("BREAK_END",connection)
+                    io.to(connection.roomId).emit("BREAK_END")
                 }
             }
             if(remainingTime<0){

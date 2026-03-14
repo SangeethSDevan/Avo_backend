@@ -37,8 +37,6 @@ export async function findPartner(
             breakCount:breakCount,
             batchCount:1,
             readyCount:0,
-            readyUsers:[]
-            
         }
         
         const userId=socketIdMap.get(socket.id);
@@ -72,13 +70,19 @@ export async function findPartner(
         socket.emit("MATCH_FOUND",{
             roomId:newConnection.roomId,
             duration:newConnection.duration,
-            partner:partnerUser?.name,
+            partner:{
+                name:partnerUser?.name,
+                category:socketDetail?.category
+            }
         })
 
         partnerSocket.emit("MATCH_FOUND",{
             roomId:newConnection.roomId,
             duration:newConnection.duration,
-            partner:currentUser?.name
+            partner:{
+                name:currentUser?.name,
+                category:category
+            }
         })
         
     } else {

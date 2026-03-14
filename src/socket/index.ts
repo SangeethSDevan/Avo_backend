@@ -26,9 +26,9 @@ export function registerSocket(io:Server){
     socket.on("SESSION_START",(roomId:string)=>{
         const connection=connections.find((connection)=>connection.roomId==roomId)
         if(!connection) return
+        connection.readyCount++;
 
-        connection.readyUsers.push(socket.id)
-        if(connection.readyUsers.length==2){
+        if(connection.readyCount===2){
             const startTime=Date.now()
             const breakDetails=calculateBreaks(connection.breakCount,startTime);
             const newActiveConnection:activeRoomDetails={
@@ -43,7 +43,7 @@ export function registerSocket(io:Server){
                 connections.splice(connectionIndex,1)
             }
             activeConnections.push(newActiveConnection)
-            io.to(newActiveConnection.roomId).emit("SESSION_STARTED",newActiveConnection)
+            io.to(newActiveConnection.roomId).emit("SESSION_STARTED")
         }
     })
     socket.on("SESSION_WAITING_LEFT",()=>{

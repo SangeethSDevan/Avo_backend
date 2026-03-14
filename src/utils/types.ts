@@ -14,11 +14,10 @@ export interface roomDetails{
     batchCount:number
     breakCount:number
     users:string[]
-    readyUsers:string[]
-    readyCount:number
+    readyCount:number,
 }
 export interface activeRoomDetails extends roomDetails{
     type:"FOCUS"|"BREAK"
     startTime:number,
-    breaks:breaks[]
+    breaks:breaks[],
 }
