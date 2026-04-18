@@ -22,6 +22,7 @@ model Users{
   
   userFriends Friends[] @relation("UserFriends")
   friendRelations Friends[] @relation("FriendRelation")
+  userStreak Streak? @relation("userStreak")
 }
 model Friends{
   userId String
@@ -31,6 +32,12 @@ model Friends{
   friend Users @relation("FriendRelation", fields: [friendId], references: [userId])
 
   @@id([userId,friendId])
+}
+model Streak{
+  userId String @unique
+  streak_count Int @default(0)
+  last_updated DateTime @default(now())
+  user Users @relation("userStreak",fields: [userId],references: [userId])
 }
 model WaitingList{
   emailId String @unique
