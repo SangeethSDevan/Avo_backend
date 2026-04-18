@@ -32,3 +32,6 @@ model Friends{
 
   @@id([userId,friendId])
 }
+model WaitingList{
+  emailId String @unique
+}

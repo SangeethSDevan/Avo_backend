@@ -32,16 +32,14 @@ export function startTimer(activeConnections:activeRoomDetails[],io:Server){
             }
             if(remainingTime<0){
                 io.to(connection.roomId).emit("SESSION_ENDED")
-                try{
-                    
-                }catch(error){
-
-                }
                 const connectionIndex=activeConnections.findIndex((c)=>c.roomId==connection.roomId)
                 activeConnections.splice(connectionIndex,1)
                 continue
             }
-            io.to(connection.roomId).emit("TIMER_STAT",remainingTime)
+            io.to(connection.roomId).emit("TIMER_STAT",{
+                remainingTime:remainingTime,
+                duration:connection.duration
+            })
         }
     },1000)
 }

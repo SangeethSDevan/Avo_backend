@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Avo — Stay Focused Together</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --black: #111111;
+      --white: #f5f0f0;
+      --pill-bg: #e8e2e2;
+      --accent: #111111;
+      --radius: 2rem;
+    }
+
+    body {
+      background: var(--white);
+      color: var(--black);
+      font-family: 'Outfit', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.5rem;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 1.25rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.03em;
+    }
+
+    .asterisks {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+    }
+
+    main {
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: var(--pill-bg);
+      border-radius: 999px;
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+
+    .tag-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--black);
+      border-radius: 50%;
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 8vw, 3.6rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      margin-bottom: 1rem;
+    }
+
+    h1 span {
+      display: block;
+    }
+
+    p.sub {
+      font-size: 1rem;
+      line-height: 1.6;
+      opacity: 0.55;
+      margin-bottom: 2.5rem;
+      max-width: 340px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .mode-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+      margin-bottom: 2.5rem;
+    }
+
+    .pill {
+      background: var(--pill-bg);
+      border-radius: 999px;
+      padding: 0.4rem 1rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    input[type="email"] {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      border-radius: var(--radius);
+      border: 2px solid transparent;
+      background: var(--pill-bg);
+      font-family: inherit;
+      font-size: 1rem;
+      color: var(--black);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="email"]::placeholder {
+      opacity: 0.45;
+    }
+
+    input[type="email"]:focus {
+      border-color: var(--black);
+    }
+
+    button[type="submit"] {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      border-radius: var(--radius);
+      border: none;
+      background: var(--black);
+      color: var(--white);
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    button[type="submit"]:hover {
+      opacity: 0.85;
+    }
+
+    button[type="submit"]:active {
+      transform: scale(0.98);
+    }
+
+    .success {
+      display: none;
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      opacity: 0.6;
+    }
+
+    footer {
+      margin-top: 3rem;
+      font-size: 0.75rem;
+      opacity: 0.3;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo">Avo</div>
+    <div class="asterisks">✳ ✳</div>
+  </header>
+
+  <main>
+    <div class="tag">
+      <span class="tag-dot"></span>
+      Now in waitlist
+    </div>
+
+    <h1>
+      <span>Focus better,</span>
+      <span>together.</span>
+    </h1>
+
+    <p class="sub">
+      Get matched with a real person for 1:1 Pomodoro sessions — study, code, meditate, or workout. Side by side.
+    </p>
+
+    <div class="mode-pills">
+      <span class="pill">Study</span>
+      <span class="pill">Meditation</span>
+      <span class="pill">Workout</span>
+      <span class="pill">&lt;/&gt; Coding</span>
+      <span class="pill">Reading</span>
+    </div>
+
+    <form class="form-group" id="waitlist-form">
+      <input type="email" id="email" name="email" placeholder="your@email.com" autocomplete="email" required />
+      <button type="submit">Let's LOCKIN →</button>
+    </form>
+
+    <p class="success" id="success">You're in! We'll notify you when it's your turn.</p>
+  </main>
+
+  <footer>© 2025 Avo · Stay focused with a real person</footer>
+
+  <script>
+    const form = document.getElementById('waitlist-form');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const emailInput = document.getElementById('email');
+      const email = emailInput.value;
+
+      if (!email || !email.includes('@')) {
+        emailInput.focus();
+        return;
+      }
+
+      const res = await fetch('/api/v1/users/waitinglist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+
+      const data = await res.json();
+
+      if (data.status === "success") {
+        document.getElementById('success').style.display = 'block';
+        emailInput.value = '';
+      }else{
+        console.log(data)
+      }
+    });
+  </script>
+
+</body>
+
+</html>

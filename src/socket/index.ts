@@ -46,10 +46,20 @@ export function registerSocket(io:Server){
             io.to(newActiveConnection.roomId).emit("SESSION_STARTED")
         }
     })
-    socket.on("SESSION_WAITING_LEFT",()=>{
+    socket.on("SESSION_EXIT",()=>{
         const waitingIndex=waitingQueue.findIndex((detail)=>detail.socketId==socket.id);
         if(waitingIndex!=-1){
             waitingQueue.splice(waitingIndex,1)
+        }
+        const activeConnectionIndex=activeConnections.findIndex((connection)=>connection.users.includes(socket.id))
+        if(activeConnectionIndex!=-1){
+            io.to(activeConnections[activeConnectionIndex]!.roomId).emit("SESSION_QUIT")
+            activeConnections.splice(activeConnectionIndex,1)
+        }
+        const connectionIndex=connections.findIndex((connection)=>connection.users.includes(socket.id))
+        if(connectionIndex!=-1){
+            io.to(connections[connectionIndex]!.roomId).emit("SESSION_LEFT")
+            connections.splice(connectionIndex,1)
         }
     })
     socket.on('disconnect',()=>{
