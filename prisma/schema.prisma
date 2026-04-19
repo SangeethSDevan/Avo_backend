@@ -36,8 +36,8 @@ model Friends{
 model Streak{
   userId String @unique
   streak_count Int @default(0)
-  last_updated DateTime @default(now())
-  user Users @relation("userStreak",fields: [userId],references: [userId])
+  last_updated DateTime
+  user Users @relation("userStreak",fields: [userId],references: [userId],onDelete: Cascade)
 }
 model WaitingList{
   emailId String @unique
